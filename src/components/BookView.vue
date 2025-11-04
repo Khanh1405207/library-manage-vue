@@ -17,7 +17,6 @@
             loading.value=false;
         }
     };
-
     onMounted(fetchBooks);
 </script>
 <template>

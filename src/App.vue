@@ -1,11 +1,12 @@
 <script setup>
-import BookView from './components/BookView.vue';
-
-
+import Header from './layout/Header.vue';
 </script>
 
 <template>
-  <BookView/>
+  <Header></Header>
+  <container>
+    <RouterView></RouterView>
+  </container>
 </template>
 
 <style scoped>

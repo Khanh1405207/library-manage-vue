@@ -37,5 +37,6 @@ export const recordAPI={
 export const authAPI={
     baseURL: "/auth",
     login: (account) => api.get("/login",account),
-    registry: (account) => api.post("/registry",account)
+    registry: (account) => api.post("/registry",account),
+    getInfo: () => api.get("/get-info")
 }
