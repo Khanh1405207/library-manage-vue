@@ -6,6 +6,7 @@ const api= axios.create({
     headers:{
         'Content-Type':'application/json',
     },
+    withCredentials:true,
 });
 
 //Book API
@@ -35,8 +36,7 @@ export const recordAPI={
 
 //Auth API
 export const authAPI={
-    baseURL: "/auth",
-    login: (account) => api.get("/login",account),
-    registry: (account) => api.post("/registry",account),
-    getInfo: () => api.get("/get-info")
+    login: (account) => api.post("/auth/login",account),
+    registry: (account) => api.post("/auth/registry",account),
+    getInfo: () => api.get("/auth/get-info")
 }
