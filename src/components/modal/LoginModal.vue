@@ -35,6 +35,7 @@
 import { getCurrentInstance, ref } from 'vue'
 import { authAPI } from '@/api'
 import { useRouter } from 'vue-router'
+
 const {appContext}= getCurrentInstance();
 const emitter = appContext.app.config.globalProperties.$emitter
 

@@ -28,15 +28,16 @@ export const accountAPI={
 //Record API
 export const recordAPI={
     getAll: () => api.get("/records"),
-    getByAccount: (acountId) => api.get("/records-by-account",{params:{acountId}}),
-    getByRecord: (acountId,bookId) => api.get("/records-by-record",{params:{acountId,bookId}}),
-    startRecord: (acountId,bookId) => api.post("/records",{params:{acountId,bookId}}),
-    endRecord: (acountId,bookId) => api.put("/records",{params:{acountId,bookId}})
+    getByAccount: (accountId) => api.get("/records-by-account",{params:{accountId}}),
+    getByRecord: (accountId,bookId) => api.get("/records-by-record",{params:{accountId,bookId}}),
+    startRecord: (accountId,bookId) => api.post("/records",null,{params:{accountId,bookId}}),
+    endRecord: (accountId,bookId) => api.put("/records",null,{params:{accountId,bookId}})
 }
 
 //Auth API
 export const authAPI={
     login: (account) => api.post("/auth/login",account),
     registry: (account) => api.post("/auth/registry",account),
-    getInfo: () => api.get("/auth/get-info")
+    getInfo: () => api.get("/auth/get-info"),
+    logout: () => api.get("/auth/logout")
 }

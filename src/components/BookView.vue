@@ -1,10 +1,11 @@
 <script setup>
-    import { bookAPI } from '@/api';
-    import { onMounted, ref } from 'vue';
+    import { bookAPI, recordAPI } from '@/api';
+    import { inject, onMounted, ref } from 'vue';
 
     const books=ref([]);
     const loading=ref(false);
     const error=ref('');
+    const user=inject('user');
     
     const fetchBooks= async () =>{
         loading.value=true;
@@ -17,6 +18,28 @@
             loading.value=false;
         }
     };
+
+    const borrowBook = async (bookId) => {
+
+    if (!user.value?.id) {
+        alert("Vui lòng đăng nhập!");
+        return;
+    }
+
+    try {
+        const res = await recordAPI.startRecord(user.value.id, bookId);
+        // THÀNH CÔNG → thông báo
+        alert("Mượn sách thành công!");
+        fetchBooks();
+    } catch (err) {
+        // XỬ LÝ LỖI AN TOÀN
+        const message = 
+            err.response?.data?.message || 
+            err.message || 
+            "Đã có lỗi xảy ra khi mượn sách";
+        alert(message);
+    }
+};
 
     onMounted(fetchBooks);
 </script>
@@ -41,7 +64,7 @@
                 <td>{{ book.category }}</td>
                 <td>{{ book.remaining }}</td>
                 <td>
-                    <button class="borrow-button">
+                    <button class="borrow-button" @click="borrowBook(book.id)">
                         Borrow
                     </button>
                 </td>

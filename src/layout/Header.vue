@@ -1,11 +1,25 @@
 <script setup>
     import LoginModal from '@/components/modal/LoginModal.vue';
-    import { ref } from 'vue';
+    import { getCurrentInstance, inject, ref } from 'vue';
+
+    const {appContext}= getCurrentInstance();
+    const emitter=appContext.app.config.globalProperties.$emitter
+
     const loginModal = ref(null)
+    const isLogin=inject('isLogin');
+    const user=inject('user');
 
     const openLogin = () => {
             loginModal.value.open();
         }
+
+    const logout = () =>{
+        if(confirm("dang xuat ???")){
+            emitter.emit('log-out');
+        }
+    }
+        
+    
 </script>
 <template>
     <nav class="header-container">
@@ -14,7 +28,11 @@
             <RouterLink class="router-header" to="/">Home</RouterLink>
             <RouterLink class="router-header" to="/books">Books</RouterLink>
         </nav>
-        <a @click="openLogin" class="login">Login</a>
+        <nav class="info-nav">
+            <p v-if="isLogin">{{ user.username }}</p>
+            <a @click="openLogin" v-if="!isLogin" class="login">Login</a>
+            <a @click="logout" v-if="isLogin" class="logout">Log out</a>
+        </nav>
     </nav>
     <LoginModal ref="loginModal" />
 </template>
@@ -47,6 +65,17 @@
 
     .login{
         color: white;
+    }
+
+    .logout{
+        color: white;
+    }
+
+    .info-nav{
+        display: flex;
+        justify-content: space-between;
+        min-width: 150px ;
+        align-items: center;
     }
 
     a:hover{
