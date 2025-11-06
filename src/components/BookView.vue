@@ -35,8 +35,7 @@
     } catch (err) {
         // XỬ LÝ LỖI AN TOÀN
         const message = 
-            err.response?.data?.message || 
-            err.message || 
+            err.response?.data ||
             "Đã có lỗi xảy ra khi mượn sách";
         alert(message);
     }
@@ -85,6 +84,7 @@
 <style scoped>
 
     .book-view{
+        padding-top: 30px;
         width: 1080px;
         justify-items: center;
     }
