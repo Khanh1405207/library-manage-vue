@@ -2,12 +2,14 @@
 import { getCurrentInstance, onBeforeUnmount, onMounted, provide, ref } from 'vue';
 import Header from './layout/Header.vue';
 import { authAPI } from './api';
+import { useRouter } from 'vue-router';
 const {appContext} = getCurrentInstance();
 const emitter=appContext.app.config.globalProperties.$emitter;
 
 const user=ref(null);
 const isAdmin=ref(false);
 const isLogin=ref(false);
+const router=useRouter();
 
 provide('user',user);
 provide('isAdmin',isAdmin);
@@ -29,6 +31,7 @@ const loadUser= async ()=>{
 const handleLogout= async()=> {
   try{
     await authAPI.logout();
+    router.push('/');
   }catch(err){
     console.warn('Logout failed:', err);
   }finally{

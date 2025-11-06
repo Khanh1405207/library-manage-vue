@@ -6,6 +6,7 @@
     const loading=ref(false);
     const error=ref('');
     const user=inject('user');
+    const isAdmin=inject('isAdmin');
     
     const fetchBooks= async () =>{
         loading.value=true;
@@ -44,52 +45,109 @@
     onMounted(fetchBooks);
 </script>
 <template>
-
-    <table class="book-table">
-        <thead>
-            <tr>
-                <th>Code</th>
-                <th>Title</th>
-                <th>Author</th>
-                <th>Category</th>
-                <th>Remaining</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="book in books" :key="book.id">
-                <td>{{ book.bookCode }}</td>
-                <td>{{ book.title }}</td>
-                <td>{{ book.author }}</td>
-                <td>{{ book.category }}</td>
-                <td>{{ book.remaining }}</td>
-                <td>
-                    <button class="borrow-button" @click="borrowBook(book.id)">
-                        Borrow
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
+    <div class="book-view">
+        <div class="book-bar">
+            <div class="title">
+                Book List
+            </div>
+            <div v-if="isAdmin">
+                <button class="add-button">+</button>
+            </div>
+        </div>
+        <table class="book-table">
+            <thead>
+                <tr>
+                    <th>Code</th>
+                    <th>Title</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>Remaining</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="book in books" :key="book.id">
+                    <td>{{ book.bookCode }}</td>
+                    <td>{{ book.title }}</td>
+                    <td>{{ book.author }}</td>
+                    <td>{{ book.category }}</td>
+                    <td>{{ book.remaining }}</td>
+                    <td>
+                        <button class="borrow-button" @click="borrowBook(book.id)">
+                            Borrow
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </template>
 <style scoped>
 
-    table{
-        border-collapse: collapse;
+    .book-view{
+        width: 1080px;
+        justify-items: center;
+    }
+
+    .book-bar{
+        width: 750px;
+        display: flex;
+        padding: 4px 4px 4px 4px;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .book-bar .title{
+        text-transform: uppercase;
+        font-size: xx-large;
+        font-weight: bold;
+    }
+
+    .book-bar .add-button{
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 8px;
+        background-color: rgb(45, 192, 45);
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    .book-bar .add-button:hover{
+        background-color: rgb(92, 235, 92);
+        cursor: cell;
     }
 
     .book-table{
-        min-width: 550px;
+        border-collapse: collapse;
+        min-width: 750px;
         background-color: aquamarine;
+    }
+
+    .book-table thead tr th{
+        font-weight: bold;
+    }
+
+    .book-table tr{
+        border-bottom: 1px solid rgb(89, 89, 89);
     }
 
     .book-table tbody{
         background-color: white;
+        text-align: center;
     }
 
-    .book-table tbody tr td{
-        text-align: center;
+    .book-table tr:nth-child(even){
+        background-color: rgb(239, 239, 239);
+    }
+
+    .book-table tr:last-child{
+        border-bottom: none;
+    }
+
+    .book-table td{
+        height: 35px;
     }
 
     .borrow-button{

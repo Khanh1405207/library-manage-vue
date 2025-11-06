@@ -29,7 +29,7 @@
             <RouterLink class="router-header" to="/books">Books</RouterLink>
         </nav>
         <nav class="info-nav">
-            <p v-if="isLogin">{{ user.username }}</p>
+            <RouterLink class="router-header" to="/profile" v-if="isLogin">{{ user.username }}</RouterLink>
             <a @click="openLogin" v-if="!isLogin" class="login">Login</a>
             <a @click="logout" v-if="isLogin" class="logout">Log out</a>
         </nav>
