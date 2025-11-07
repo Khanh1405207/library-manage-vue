@@ -1,7 +1,7 @@
 <script setup>
     import { accountAPI, recordAPI } from '@/api';
     import { inject, onBeforeMount, onBeforeUpdate, onMounted, onUpdated, ref, watch } from 'vue';
-import ProfileModal from './modal/ProfileModal.vue';
+    import ProfileModal from '../modal/ProfileModal.vue';
 
     const user=ref(null);
     const records=ref(null);

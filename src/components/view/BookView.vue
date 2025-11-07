@@ -1,8 +1,8 @@
 <script setup>
     import { bookAPI, recordAPI } from '@/api';
     import { inject, onMounted, ref } from 'vue';
-    import AddBookModal from './modal/AddBookModal.vue';
-import EditBookModal from './modal/EditBookModal.vue';
+    import AddBookModal from '../modal/AddBookModal.vue';
+    import EditBookModal from '../modal/EditBookModal.vue';
 
     const books=ref([]);
     const loading=ref(false);

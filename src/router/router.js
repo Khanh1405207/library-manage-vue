@@ -1,7 +1,7 @@
-import Home from "@/components/Home.vue"
-import BookView from "@/components/BookView.vue"
+import BookView from "@/components/view/BookView.vue"
+import Home from "@/components/view/Home.vue"
+import Profile from "@/components/view/Profile.vue"
 import { createRouter,createWebHistory } from "vue-router"
-import Profile from "@/components/Profile.vue"
 
 const routes=[
     {
