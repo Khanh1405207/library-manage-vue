@@ -5,7 +5,7 @@
     <div v-if="showModal" class="modal-overlay" @click="close">
       <!-- Form ở giữa -->
       <div class="modal-content" @click.stop>
-        <h2 class="modal-title">Đăng nhập</h2>
+        <h2 class="modal-title">Login</h2>
         
         <form @submit.prevent="login" class="login-form">
           <input 
@@ -22,12 +22,16 @@
             required 
             class="input"
           />
-          <button type="submit" class="btn-login">Đăng nhập</button>
+          <button type="submit" class="btn-login">Login</button>
+          <div class="button-contain">
+            <a class="registry-open" @click="openResgistry">registry</a>
+          </div>
         </form>
 
         <button class="close-btn" @click="close">×</button>
       </div>
     </div>
+    <RegistryModal ref="registryModal" @open-login="openLogin"></RegistryModal>
   </Teleport>
 </template>
 
@@ -35,12 +39,14 @@
 import { getCurrentInstance, ref } from 'vue'
 import { authAPI } from '@/api'
 import { useRouter } from 'vue-router'
+import RegistryModal from './RegistryModal.vue';
 
 const {appContext}= getCurrentInstance();
 const emitter = appContext.app.config.globalProperties.$emitter
 
-const router = useRouter()
-const showModal = ref(false)
+const router = useRouter();
+const showModal = ref(false);
+const registryModal=ref(null);
 const form = ref({
   username: '',
   password: ''
@@ -64,6 +70,16 @@ const login = async () => {
   } catch (err) {
     alert('Sai tài khoản hoặc mật khẩu')
   }
+}
+
+const openResgistry=()=>{
+  registryModal.value.open();
+  close();
+}
+
+const openLogin=()=>{
+  registryModal.value.close();
+  open();
 }
 
 // Expose để dùng ở ngoài
@@ -148,6 +164,23 @@ defineExpose({ open, close })
 
 .close-btn:hover {
   color: #000;
+}
+
+.button-contain{
+  width: 100%;
+  display: flex;
+  justify-content: end;
+}
+
+.registry-open{
+  color: rgb(91, 91, 255);
+}
+
+.registry-open:hover{
+  color: rgb(34, 34, 193);
+  text-decoration: underline;
+  background-color: transparent;
+  cursor: pointer;
 }
 
 /* Animation */
