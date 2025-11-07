@@ -2,6 +2,7 @@
     import { bookAPI, recordAPI } from '@/api';
     import { inject, onMounted, ref } from 'vue';
     import AddBookModal from './modal/AddBookModal.vue';
+import EditBookModal from './modal/EditBookModal.vue';
 
     const books=ref([]);
     const loading=ref(false);
@@ -9,6 +10,7 @@
     const user=inject('user');
     const isAdmin=inject('isAdmin');
     const addBookModal=ref(null);
+    const editBookModal=ref(null);
     
     const fetchBooks= async () =>{
         loading.value=true;
@@ -42,8 +44,23 @@
         }
     };
 
-    const handleAdd=(newBook) =>{
+    const handleAdd=() =>{
         fetchBooks();
+    }
+
+    const handleEdit=()=>{
+        fetchBooks();
+    }
+
+    const handleDelete=()=>{
+        fetchBooks();
+    }
+
+    const openEditModal=(book)=>{
+        if(isAdmin.value){
+            editBookModal.value.curBook=book;
+            editBookModal.value.open();
+        }
     }
 
     onMounted(fetchBooks);
@@ -71,14 +88,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="book in books" :key="book.id">
+                <tr v-for="book in books" :key="book.id" @click="openEditModal(book)">
                     <td>{{ book.bookCode }}</td>
                     <td>{{ book.title }}</td>
                     <td>{{ book.author }}</td>
                     <td>{{ book.category }}</td>
                     <td>{{ book.remaining }}</td>
                     <td>
-                        <button class="borrow-button" @click="borrowBook(book.id)">
+                        <button class="borrow-button" @click.stop="borrowBook(book.id)">
                             Borrow
                         </button>
                     </td>
@@ -87,10 +104,9 @@
         </table>
     </div>
     <AddBookModal @add-book="handleAdd" ref="addBookModal"></AddBookModal>
+    <EditBookModal @edit-success="handleEdit" @delete-success="handleDelete" ref="editBookModal"></EditBookModal>
 </template>
 <style scoped>
-
-
 
     .book-view{
         padding-top: 30px;

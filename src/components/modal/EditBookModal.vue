@@ -2,16 +2,10 @@
     import { bookAPI } from '@/api';
     import { ref } from 'vue';
 
-    const emit = defineEmits(['add-book'])
+    const emit=defineEmits(['edit-success','delete-success'])
 
     const showModal=ref(false);
-    const book=ref({
-        bookCode: "",
-        title: "",
-        author: "",
-        category: "",
-        remaining: ""
-    })
+    const curBook=ref(null);
 
     const open= () =>{
         showModal.value=true;
@@ -21,40 +15,48 @@
         showModal.value=false;
     }
 
-    const addBook=async()=>{
+    const editBook=async ()=>{
         try{
-            await bookAPI.addBook(book.value);
-            alert("Them thanh cong");
-            emit('add-book');
+            await bookAPI.updateBook(curBook.value);
+            alert('Sua thanh cong');
+            emit('edit-success');
             close();
         }catch(err){
-            alert(err.response?.data||err);
-        }finally{
-            book.value.bookCode="";
-            book.value.title="";
-            book.value.author="";
-            book.value.category="";
-            book.value.remaining=""
+            alert('Something went wrong'||err.response?.data);
         }
     }
 
-    defineExpose({open,close});
+    const deleteBook=async ()=>{
+        try{
+            if(confirm('are you sure')){
+                await bookAPI.deleteBook(curBook.value.id);
+                alert('Xoa thanh cong');
+                emit('delete-success');
+                close();
+            }
+        }catch(err){
+            alert('Something went wrong'||err.response?.data);
+        }
+    }
+
+    defineExpose({open,close,curBook});
 </script>
 <template>
     <Teleport to="body">
-        <div v-if="showModal" class="modal-overlay" @click="close()">
+        <div v-if="showModal" class="modal-overlay" @click="close">
             <div class="modal-content" @click.stop>
                 <div class="title">
-                    Add book
+                    Edit book
                 </div>
-                <form class="form-book" @submit.prevent="addBook">
-                    <input class="input" type="text" v-model="book.bookCode" placeholder="Code" required>
-                    <input class="input" type="text" v-model="book.title" placeholder="Title" required>
-                    <input class="input" type="text" v-model="book.author" placeholder="Author" required>
-                    <input class="input" type="text" v-model="book.category" placeholder="Category" required>
-                    <input class="input" type="number" v-model="book.remaining" placeholder="Remaining" required>
+                <form class="form-book">
+                    <input class="input" type="text" v-model="curBook.bookCode" placeholder="Code" required>
+                    <input class="input" type="text" v-model="curBook.title" placeholder="Title" required>
+                    <input class="input" type="text" v-model="curBook.author" placeholder="Author" required>
+                    <input class="input" type="text" v-model="curBook.category" placeholder="Category" required>
+                    <input class="input" type="number" v-model="curBook.remaining" placeholder="Remaining" required>
                     <div class="button-contain">
-                        <button class="add-button" type="submit">Add</button>
+                        <button type="button" class="delete-button" @click="deleteBook">Delete</button>
+                        <button type="button" class="edit-button" @click="editBook">Edit</button>
                     </div>
                 </form>
             </div>
@@ -62,15 +64,14 @@
     </Teleport>
 </template>
 <style scoped>
-
     .modal-overlay{
         position: fixed;
-        top: 0; bottom: 0; left: 0; right: 0;
+        top: 0;bottom: 0;left: 0;right: 0;
         display: flex;
-        z-index: 9999;
         justify-content: center;
         align-items: center;
         background-color: rgba(0,0,0,0.5);
+        z-index: 9999;
         animation: fadeIn 0.3s ease;
     }
 
@@ -115,11 +116,11 @@
         width: 100%;
         display: flex;
         align-items: center;
-        justify-content: end;
+        justify-content: space-between;
         padding: 0 5rem;
     }
 
-    .form-book .add-button{
+    .form-book .edit-button{
         width: 200px;
         height: 50px;
         margin-top: 30px;
@@ -132,9 +133,27 @@
         border-radius: 10px;
     }
 
-    .form-book .add-button:hover{
+    .form-book .delete-button{
+        width: 200px;
+        height: 50px;
+        margin-top: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        color: white;
+        text-transform: uppercase;
+        background-color: #f0373a;
+        border: none;
+        border-radius: 10px;
+    }
+
+    .form-book .edit-button:hover{
         color: #ddd;
         background-color: #0056b3;
+    }
+
+    .form-book .delete-button:hover{
+        color: #ddd;
+        background-color: #c92f31;
     }
 
     @keyframes fadeIn {
@@ -146,5 +165,4 @@
         from{transform: translateY(50px);opacity: 0;};
         to{transform: translateY(0);opacity: 1;};
     }
-
 </style>

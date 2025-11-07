@@ -1,10 +1,12 @@
 <script setup>
     import { accountAPI, recordAPI } from '@/api';
     import { inject, onBeforeMount, onBeforeUpdate, onMounted, onUpdated, ref, watch } from 'vue';
+import ProfileModal from './modal/ProfileModal.vue';
 
     const user=ref(null);
     const records=ref(null);
     const curUser=inject('user');
+    const profileModal=ref(null);
 
     const formatDate=(localDateString) =>{
         return new Date(localDateString).toLocaleDateString('vi-VN',{
@@ -42,6 +44,11 @@
         }
     }
 
+    const openProfileModal= (user)=>{
+        profileModal.value.user=user;
+        profileModal.value.open();
+    }
+
     watch(()=>curUser?.value?.id,(id) =>{
         if(id){
             fetchUser();
@@ -64,7 +71,7 @@
                 <p>Username: {{ user.username }}</p>
                 <p>Email: {{ user.email }}</p>
                 <p>Role: {{ user.role }}</p>
-                <button class="edit-button">
+                <button class="edit-button" @click="openProfileModal(user)">
                     Edit
                 </button>
             </div>
@@ -98,6 +105,7 @@
             </table>
         </div>
     </div>
+    <ProfileModal ref="profileModal"></ProfileModal>
 </template>
 <style scoped>
     .profile-view{

@@ -18,7 +18,7 @@ provide('isLogin',isLogin);
 const loadUser= async ()=>{
   try{
     const res= await authAPI.getInfo();
-    user.value=res.data;
+    user.value={...user.value,...res.data};
     isAdmin.value= res.data.role==='ADMIN';
     isLogin.value= res.data != null;
   }catch(err){
@@ -48,12 +48,14 @@ const handleLogin=() => {
 onMounted(()=>{
   emitter.on('login-success',handleLogin);
   emitter.on('log-out',handleLogout);
+  emitter.on('update-profile',loadUser);
   loadUser();
 })
 
 onBeforeUnmount(()=>{
   emitter.off('login-success',handleLogin);
   emitter.off('log-out',handleLogout);
+  emitter.off('update-profile',loadUser);
 })
 
 </script>
