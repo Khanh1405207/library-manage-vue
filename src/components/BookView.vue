@@ -1,12 +1,14 @@
 <script setup>
     import { bookAPI, recordAPI } from '@/api';
     import { inject, onMounted, ref } from 'vue';
+    import AddBookModal from './modal/AddBookModal.vue';
 
     const books=ref([]);
     const loading=ref(false);
     const error=ref('');
     const user=inject('user');
     const isAdmin=inject('isAdmin');
+    const addBookModal=ref(null);
     
     const fetchBooks= async () =>{
         loading.value=true;
@@ -21,27 +23,31 @@
     };
 
     const borrowBook = async (bookId) => {
+        if (!user.value?.id) {
+            alert("Vui lòng đăng nhập!");
+            return;
+        }
 
-    if (!user.value?.id) {
-        alert("Vui lòng đăng nhập!");
-        return;
-    }
+        try {
+            const res = await recordAPI.startRecord(user.value.id, bookId);
+            // THÀNH CÔNG → thông báo
+            alert("Mượn sách thành công!");
+            fetchBooks();
+        } catch (err) {
+            // XỬ LÝ LỖI AN TOÀN
+            const message = 
+                err.response?.data ||
+                "Đã có lỗi xảy ra khi mượn sách";
+            alert(message);
+        }
+    };
 
-    try {
-        const res = await recordAPI.startRecord(user.value.id, bookId);
-        // THÀNH CÔNG → thông báo
-        alert("Mượn sách thành công!");
+    const handleAdd=(newBook) =>{
         fetchBooks();
-    } catch (err) {
-        // XỬ LÝ LỖI AN TOÀN
-        const message = 
-            err.response?.data ||
-            "Đã có lỗi xảy ra khi mượn sách";
-        alert(message);
     }
-};
 
     onMounted(fetchBooks);
+
 </script>
 <template>
     <div class="book-view">
@@ -50,7 +56,7 @@
                 Book List
             </div>
             <div v-if="isAdmin">
-                <button class="add-button">+</button>
+                <button @click="addBookModal.open()" class="add-button">+</button>
             </div>
         </div>
         <table class="book-table">
@@ -80,8 +86,11 @@
             </tbody>
         </table>
     </div>
+    <AddBookModal @add-book="handleAdd" ref="addBookModal"></AddBookModal>
 </template>
 <style scoped>
+
+
 
     .book-view{
         padding-top: 30px;

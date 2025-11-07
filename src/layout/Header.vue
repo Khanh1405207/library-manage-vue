@@ -37,6 +37,7 @@
     <LoginModal ref="loginModal" />
 </template>
 <style scoped>
+
     .header-container{
         display: flex;
         background-color: darkcyan;

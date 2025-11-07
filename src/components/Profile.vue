@@ -130,6 +130,7 @@
 
     .profile-content p{
         font-size: large;
+        margin: 3px 0px 3px 0px;
     }
 
     .profile-content .edit-button{
@@ -143,8 +144,14 @@
         border-radius: 3px;
     }
 
+    .profile-content .edit-button:hover{
+        background-color: rgb(77, 188, 116);
+        color: rgb(236, 234, 234);
+    }
+
     .profile-view .records-borrow{
         justify-items: center;
+        height: 100%;
         border-left: 1px solid rgb(89, 89, 89);
         padding: 0px 5px 0px 5px;
     }

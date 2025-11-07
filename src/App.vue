@@ -59,14 +59,36 @@ onBeforeUnmount(()=>{
 </script>
 
 <template>
-  <Header></Header>
-  <container class="container">
-    <RouterView></RouterView>
-  </container>
+  <div class="container">
+    <div class="nav-bar">
+      <Header></Header>
+    </div>
+    <div class="body">
+      <RouterView></RouterView>
+    </div>
+  </div>
 </template>
 
 <style scoped>
-  .container{
-    min-height: 600px;
+
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    box-sizing: border-box;
   }
+
+  .nav-bar{
+    position: fixed;
+    width: 100%;
+    z-index: 99;
+  }
+
+  .body{
+    position: sticky;
+    padding-top: 35px;
+    min-height: 700px;
+  }
+
 </style>

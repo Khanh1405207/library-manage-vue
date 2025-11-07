@@ -11,14 +11,14 @@
           <input 
             v-model="form.username" 
             type="text" 
-            placeholder="Tên đăng nhập" 
+            placeholder="Username" 
             required 
             class="input"
           />
           <input 
             v-model="form.password" 
             type="password" 
-            placeholder="Mật khẩu" 
+            placeholder="Password" 
             required 
             class="input"
           />
