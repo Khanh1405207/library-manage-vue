@@ -14,3 +14,7 @@ Giao diện quản lý thư viện: responsive, đăng nhập, mượn sách.
 npm install
 npm run dev
 App: http://localhost:5173
+```
+## API
+
+API: http://localhost:8080
