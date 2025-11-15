@@ -1,6 +1,6 @@
 # Library Management App  
 
-**Frontend - Vue 3 + Pinia**
+**Frontend - Vue 3**
 
 Giao diện quản lý thư viện: responsive, đăng nhập, mượn sách.
 
